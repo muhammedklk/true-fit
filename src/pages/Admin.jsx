@@ -4,7 +4,8 @@ import { useProducts } from '../context/ProductContext';
 import { useNavigate } from 'react-router-dom';
 import { 
   Plus, Trash2, LayoutGrid, Box, Settings, LogOut, 
-  Image as ImageIcon, Video, X, Tag, TrendingUp, CreditCard, ShoppingCart, User, MapPin
+  Image as ImageIcon, Video, X, Tag, TrendingUp, CreditCard, ShoppingCart, User, MapPin,
+  Truck, CheckCircle
 } from 'lucide-react';
 
 const Admin = () => {
