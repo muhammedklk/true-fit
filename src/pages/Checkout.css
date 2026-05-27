@@ -1,0 +1,248 @@
+.checkout-page {
+  padding: 100px 0;
+  background-color: var(--bg-light);
+  min-height: 100vh;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+@media (max-width: 991px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkout-form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.checkout-section-title {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.location-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.location-input-group input {
+  flex: 1;
+}
+
+.btn-map {
+  background: var(--text-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-map:hover {
+  background: var(--primary-color);
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.payment-method {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-method.active {
+  border-color: var(--primary-color);
+  background-color: rgba(0,0,0,0.02);
+}
+
+.payment-method svg {
+  color: var(--text-color);
+}
+
+.checkout-summary {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.checkout-summary-items {
+  margin-bottom: 25px;
+}
+
+.checkout-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.checkout-summary-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.checkout-summary-item-info h4 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.checkout-summary-item-info p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.checkout-summary-totals .summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: var(--text-muted);
+}
+
+.checkout-summary-totals .summary-row.total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  border-top: 1px solid var(--border-color);
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+/* Map Modal Styles */
+.map-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-modal {
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.map-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.map-modal-header h3 {
+  margin: 0;
+}
+
+.map-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.map-modal-close:hover {
+  color: var(--primary-color);
+}
+
+.map-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-loading {
+  color: var(--text-muted);
+}
