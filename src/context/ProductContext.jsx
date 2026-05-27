@@ -130,30 +130,42 @@ export const ProductProvider = ({ children }) => {
   }, [orders]);
 
   const login = (email, password) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Admin check
-    if (email === 'admin' && password === 'admin123') {
+    if (normalizedEmail === 'admin' && password === 'admin123') {
       const adminUser = { role: 'admin', name: 'Store Admin', email: 'admin' };
       setUser(adminUser);
       return { success: true, role: 'admin' };
     }
 
-    // Customer check
-    const foundUser = users.find(u => u.email === email && u.password === password);
+    // Customer check (case-insensitive email)
+    const foundUser = users.find(
+      u => u.email.toLowerCase() === normalizedEmail && u.password === password
+    );
     if (foundUser) {
       const customerUser = { role: 'customer', ...foundUser };
       setUser(customerUser);
       return { success: true, role: 'customer' };
     }
 
-    return { success: false, message: 'Invalid credentials' };
+    return { success: false, message: 'Invalid email or password' };
   };
 
   const register = (userData) => {
-    if (users.find(u => u.email === userData.email)) {
-      return { success: false, message: 'Email already registered' };
+    const normalizedEmail = userData.email.trim().toLowerCase();
+    if (users.find(u => u.email.toLowerCase() === normalizedEmail)) {
+      return { success: false, message: 'This email is already registered. Please login.' };
     }
-    const newUser = { ...userData, id: Date.now() };
-    setUsers([...users, newUser]);
+    const newUser = { ...userData, email: normalizedEmail, id: Date.now() };
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    // Save to localStorage immediately (don't wait for useEffect)
+    localStorage.setItem('tf_users', JSON.stringify(updatedUsers));
+    // Auto-login the new user
+    const customerUser = { role: 'customer', ...newUser };
+    setUser(customerUser);
+    localStorage.setItem('tf_user', JSON.stringify(customerUser));
     return { success: true };
   };
 
