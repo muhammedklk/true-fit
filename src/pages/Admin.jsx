@@ -204,22 +204,31 @@ const Admin = () => {
             </div>
 
             {isAdding && (
-              <div className="admin-form-container">
-                <form onSubmit={handleSubmitProduct} className="admin-form">
-                  <h3>Add New Product</h3>
+              <div className="add-product-sections">
+
+                {/* Section 1: Basic Info */}
+                <div className="product-section-card">
+                  <div className="product-section-header">
+                    <div className="section-number">1</div>
+                    <div>
+                      <h3>Basic Information</h3>
+                      <p>Product name, category and price</p>
+                    </div>
+                  </div>
                   <div className="form-grid">
                     <div className="form-group">
                       <label>Product Name</label>
-                      <input 
-                        type="text" 
-                        required 
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Classic Oxford Shirt"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />
                     </div>
                     <div className="form-group">
                       <label>Category</label>
-                      <select 
+                      <select
                         value={formData.category}
                         onChange={(e) => setFormData({...formData, category: e.target.value})}
                       >
@@ -229,89 +238,130 @@ const Admin = () => {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label>Price ($)</label>
-                      <input 
-                        type="number" 
-                        required 
+                      <label>Price (Rs.)</label>
+                      <input
+                        type="number"
+                        required
+                        placeholder="e.g. 1299"
                         value={formData.price}
                         onChange={(e) => setFormData({...formData, price: e.target.value})}
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div className="media-inputs">
-                    <div className="media-section">
-                       <label><ImageIcon size={16} /> Images</label>
-                       <div className="upload-container">
-                         <input type="file" id="image-upload" multiple accept="image/png, image/jpeg, image/jpg" onChange={(e) => handleFileUpload(e, 'images')} style={{display: 'none'}} />
-                         <label htmlFor="image-upload" className="btn btn-outline" style={{width: '100%', marginBottom: '15px', display: 'flex', justifyContent: 'center', cursor: 'pointer', padding: '10px'}}>Upload Images</label>
-                       </div>
-                       
-                       {formData.images.map((img, idx) => (
-                         <div key={idx} style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
-                           {img && img.startsWith('data:image') && (
-                             <img src={img} alt="preview" style={{width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px'}} />
-                           )}
-                           <input 
-                             type="text" 
-                             value={img.startsWith('data:') ? 'Uploaded Image File' : img} 
-                             onChange={(e) => !img.startsWith('data:') && updateMediaField('images', idx, e.target.value)} 
-                             placeholder="Image URL (https://...)"
-                             readOnly={img.startsWith('data:')}
-                             style={{flex: 1, marginBottom: 0}}
-                           />
-                           {formData.images.length > 1 && (
-                             <button type="button" onClick={() => removeMediaField('images', idx)} style={{padding: '0 12px', background: '#ffebee', color: '#d32f2f', border: 'none', borderRadius: '8px', cursor: 'pointer'}}><X size={16}/></button>
-                           )}
-                         </div>
-                       ))}
-                       <button type="button" onClick={addImageField} className="add-field-btn">+ Add another URL</button>
-                    </div>
-                    <div className="media-section">
-                       <label><Video size={16} /> Videos</label>
-                       <div className="upload-container">
-                         <input type="file" id="video-upload" multiple accept="video/mp4, video/webm, video/ogg" onChange={(e) => handleFileUpload(e, 'videos')} style={{display: 'none'}} />
-                         <label htmlFor="video-upload" className="btn btn-outline" style={{width: '100%', marginBottom: '15px', display: 'flex', justifyContent: 'center', cursor: 'pointer', padding: '10px'}}>Upload Videos</label>
-                       </div>
-                       
-                       {formData.videos.map((vid, idx) => (
-                         <div key={idx} style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
-                           <input 
-                             type="text" 
-                             value={vid.startsWith('data:') ? 'Uploaded Video File' : vid} 
-                             onChange={(e) => !vid.startsWith('data:') && updateMediaField('videos', idx, e.target.value)} 
-                             placeholder="Video URL (https://...)"
-                             readOnly={vid.startsWith('data:')}
-                             style={{flex: 1, marginBottom: 0}}
-                           />
-                           {formData.videos.length > 1 && (
-                             <button type="button" onClick={() => removeMediaField('videos', idx)} style={{padding: '0 12px', background: '#ffebee', color: '#d32f2f', border: 'none', borderRadius: '8px', cursor: 'pointer'}}><X size={16}/></button>
-                           )}
-                         </div>
-                       ))}
-                       <button type="button" onClick={addVideoField} className="add-field-btn">+ Add another URL</button>
+                {/* Section 2: Images */}
+                <div className="product-section-card">
+                  <div className="product-section-header">
+                    <div className="section-number">2</div>
+                    <div>
+                      <h3>Product Images</h3>
+                      <p>Upload photos or paste image URLs</p>
                     </div>
                   </div>
+                  <input type="file" id="image-upload" multiple accept="image/png,image/jpeg,image/jpg" onChange={(e) => handleFileUpload(e, 'images')} style={{display:'none'}} />
+                  <label htmlFor="image-upload" className="upload-drop-zone">
+                    <ImageIcon size={28} />
+                    <span>Click to upload images</span>
+                    <small>PNG, JPG supported</small>
+                  </label>
+                  <div className="media-url-list">
+                    {formData.images.map((img, idx) => (
+                      <div key={idx} className="media-url-row">
+                        {img && img.startsWith('data:image') && (
+                          <img src={img} alt="preview" className="media-thumb" />
+                        )}
+                        <input
+                          type="text"
+                          value={img.startsWith('data:') ? 'Uploaded Image File' : img}
+                          onChange={(e) => !img.startsWith('data:') && updateMediaField('images', idx, e.target.value)}
+                          placeholder="Or paste image URL (https://...)"
+                          readOnly={img.startsWith('data:')}
+                        />
+                        {formData.images.length > 1 && (
+                          <button type="button" onClick={() => removeMediaField('images', idx)} className="remove-media-btn"><X size={15}/></button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <button type="button" onClick={addImageField} className="add-field-btn">+ Add another URL</button>
+                </div>
 
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea 
-                      rows="3"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    ></textarea>
+                {/* Section 3: Videos */}
+                <div className="product-section-card">
+                  <div className="product-section-header">
+                    <div className="section-number">3</div>
+                    <div>
+                      <h3>Product Videos</h3>
+                      <p>Upload videos or paste video URLs</p>
+                    </div>
                   </div>
-                  <div className="form-group checkbox">
-                    <input 
-                      type="checkbox" 
-                      id="trending"
-                      checked={formData.trending}
-                      onChange={(e) => setFormData({...formData, trending: e.target.checked})}
-                    />
-                    <label htmlFor="trending">Mark as Trending</label>
+                  <input type="file" id="video-upload" multiple accept="video/mp4,video/webm,video/ogg" onChange={(e) => handleFileUpload(e, 'videos')} style={{display:'none'}} />
+                  <label htmlFor="video-upload" className="upload-drop-zone">
+                    <Video size={28} />
+                    <span>Click to upload videos</span>
+                    <small>MP4, WebM supported</small>
+                  </label>
+                  <div className="media-url-list">
+                    {formData.videos.map((vid, idx) => (
+                      <div key={idx} className="media-url-row">
+                        <input
+                          type="text"
+                          value={vid.startsWith('data:') ? 'Uploaded Video File' : vid}
+                          onChange={(e) => !vid.startsWith('data:') && updateMediaField('videos', idx, e.target.value)}
+                          placeholder="Or paste video URL (https://...)"
+                          readOnly={vid.startsWith('data:')}
+                        />
+                        {formData.videos.length > 1 && (
+                          <button type="button" onClick={() => removeMediaField('videos', idx)} className="remove-media-btn"><X size={15}/></button>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  <button type="submit" className="btn btn-primary">Save Product</button>
-                </form>
+                  <button type="button" onClick={addVideoField} className="add-field-btn">+ Add another URL</button>
+                </div>
+
+                {/* Section 4: Description */}
+                <div className="product-section-card">
+                  <div className="product-section-header">
+                    <div className="section-number">4</div>
+                    <div>
+                      <h3>Description</h3>
+                      <p>Describe the product for customers</p>
+                    </div>
+                  </div>
+                  <textarea
+                    rows="4"
+                    placeholder="Write a detailed product description..."
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    className="description-textarea"
+                  ></textarea>
+                </div>
+
+                {/* Section 5: Options & Submit */}
+                <div className="product-section-card">
+                  <div className="product-section-header">
+                    <div className="section-number">5</div>
+                    <div>
+                      <h3>Options</h3>
+                      <p>Extra settings for this product</p>
+                    </div>
+                  </div>
+                  <label className="toggle-label">
+                    <div className={`toggle-switch ${formData.trending ? 'on' : ''}`} onClick={() => setFormData({...formData, trending: !formData.trending})}>
+                      <div className="toggle-knob"></div>
+                    </div>
+                    <span>Mark as <strong>Trending</strong> — appears in trending section on homepage</span>
+                  </label>
+                  <div className="form-actions-row">
+                    <button type="button" className="btn btn-outline" onClick={() => setIsAdding(false)}>Cancel</button>
+                    <button type="button" className="btn btn-primary" onClick={handleSubmitProduct}>
+                      <Plus size={18} /> Save Product
+                    </button>
+                  </div>
+                </div>
+
               </div>
             )}
 
