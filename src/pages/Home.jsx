@@ -1,5 +1,5 @@
 import './Home.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
@@ -7,7 +7,10 @@ import { ArrowRight, Star, ShoppingBag, Zap } from 'lucide-react';
 
 const Home = () => {
   const { products, categories, offers } = useProducts();
+  const [activeCategory, setActiveCategory] = useState('All');
   const trendingProducts = products.filter(p => p.trending).slice(0, 4);
+
+  const filteredProducts = products.filter(p => activeCategory === 'All' || p.category === activeCategory).slice(0, 4);
 
   return (
     <div className="home-page">
@@ -58,14 +61,25 @@ const Home = () => {
           </div>
           <div className="category-filters">
             {categories.map(cat => (
-              <button key={cat} className={`cat-filter-btn ${cat === 'All' ? 'active' : ''}`}>{cat}</button>
+              <button 
+                key={cat} 
+                className={`cat-filter-btn ${cat === activeCategory ? 'active' : ''}`}
+                onClick={() => setActiveCategory(cat)}
+              >
+                {cat}
+              </button>
             ))}
           </div>
           <div className="grid-4">
-            {products.slice(0, 4).map(product => (
+            {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+          {filteredProducts.length === 0 && (
+            <div className="empty-category" style={{ textAlign: 'center', padding: '40px 0' }}>
+              <p style={{ color: 'var(--secondary-color)' }}>No products found in this category.</p>
+            </div>
+          )}
         </div>
       </section>
 
