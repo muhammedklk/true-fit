@@ -6,54 +6,165 @@ import ProductCard from '../components/ProductCard';
 import { ArrowRight, Star, ShoppingBag, Zap } from 'lucide-react';
 
 const Home = () => {
-  const { products, categories, offers } = useProducts();
+  const { products, categories, offers, addToCart } = useProducts();
   const [activeCategory, setActiveCategory] = useState('All');
-  const trendingProducts = products.filter(p => p.trending).slice(0, 4);
+  const [activeShowcaseIdx, setActiveShowcaseIdx] = useState(0);
 
+  const heroShowcaseProducts = [
+    {
+      id: 18,
+      name: "Ocean Hoodie",
+      category: "Coats",
+      price: 489,
+      image: "/images/ocean_hoodie.png",
+      tag: "Best Seller",
+      colorName: "Ocean Blue"
+    },
+    {
+      id: 6,
+      name: "Sand Oversize T-Shirt",
+      category: "T-Shirts",
+      price: 498,
+      image: "/images/sand_tshirt.png",
+      tag: "New Trend",
+      colorName: "Sand Beige"
+    },
+    {
+      id: 13,
+      name: "Ocean Leather Watch",
+      category: "Watches",
+      price: 1999,
+      image: "/images/blue_watch.png",
+      tag: "Premium Edition",
+      colorName: "Cobalt Blue"
+    }
+  ];
+
+  const currentShowcase = heroShowcaseProducts[activeShowcaseIdx];
+  const trendingProducts = products.filter(p => p.trending).slice(0, 4);
   const filteredProducts = products.filter(p => activeCategory === 'All' || p.category === activeCategory).slice(0, 4);
 
   return (
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero">
+        <div className="hero-glow-overlay" style={{
+          background: `radial-gradient(circle at 75% 50%, ${
+            activeShowcaseIdx === 0 ? 'rgba(0, 119, 182, 0.12)' :
+            activeShowcaseIdx === 1 ? 'rgba(210, 180, 140, 0.12)' :
+            'rgba(74, 78, 105, 0.12)'
+          } 0%, transparent 60%)`
+        }}></div>
+
         <div className="container hero-container">
           <div className="hero-content">
-            <div className="hero-badge fade-in">2024 Collection</div>
-            <h1 className="hero-title fade-in">Redefine Your <span>Style</span></h1>
+            <div className="hero-badge fade-in">
+              <span className="sparkle">✨</span> Premium Modern Essentials
+            </div>
+            <h1 className="hero-title fade-in">
+              Redefine Your <br />
+              <span>Signature</span> Look
+            </h1>
             <p className="hero-desc fade-in">
-              Discover the ultimate fusion of comfort and sophistication. Our premium 
-              collection is designed for the modern man who values quality.
+              Discover the ultimate fusion of absolute comfort and tailored sophistication. 
+              Our new studio collection is designed for the modern man who values quality.
             </p>
-            <div className="hero-btns fade-in">
-              <Link to="/shop" className="btn btn-primary">Shop Collection <ArrowRight size={18} /></Link>
-              <Link to="/shop" className="btn btn-outline">Explore Styles</Link>
+            
+            <div className="hero-btns-row fade-in">
+              <Link to="/shop" className="hero-btn-primary">
+                Shop Collection <ArrowRight className="btn-arrow" size={18} />
+              </Link>
+              <a href="#categories-section" className="hero-btn-secondary">
+                View Details
+              </a>
+            </div>
+
+            <div className="hero-trust-box fade-in">
+              <div className="trust-avatars">
+                <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100" alt="user" />
+                <img src="https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=100" alt="user" />
+                <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100" alt="user" />
+              </div>
+              <div className="trust-text">
+                <div className="stars">
+                  <Star size={14} fill="#79a321" color="#79a321" />
+                  <Star size={14} fill="#79a321" color="#79a321" />
+                  <Star size={14} fill="#79a321" color="#79a321" />
+                  <Star size={14} fill="#79a321" color="#79a321" />
+                  <Star size={14} fill="#79a321" color="#79a321" />
+                </div>
+                <span>Over <strong>15k+</strong> positive customer reviews</span>
+              </div>
             </div>
           </div>
-          <div className="hero-image-box fade-in">
-             <img src="https://images.pexels.com/photos/837140/pexels-photo-837140.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Hero Model" className="hero-image" />
-             <div className="hero-floating-card">
-               <div className="card-top">
-                 <div className="avatar-group">
-                   <img src="https://i.pravatar.cc/100?img=1" alt="user" />
-                   <img src="https://i.pravatar.cc/100?img=2" alt="user" />
-                   <img src="https://i.pravatar.cc/100?img=3" alt="user" />
-                 </div>
-                 <div className="card-stats">
-                   <strong>230k+</strong>
-                   <span>Joined users</span>
-                 </div>
-               </div>
-             </div>
-             <div className="hero-accent-banner">
-                <span>Shop the <strong>LOOK</strong></span>
-                <ArrowRight size={20} />
-             </div>
+
+          <div className="hero-showcase-column fade-in">
+            <div className="showcase-card-wrapper">
+              {/* Spinning Badge */}
+              <div className="spinning-badge-container">
+                <svg viewBox="0 0 100 100" className="spinning-badge-svg">
+                  <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                  <text className="spinning-text">
+                    <textPath href="#circlePath">
+                      • PREMIUM QUALITY • COMFORT FIT • EST 2026 • TRUE FIT
+                    </textPath>
+                  </text>
+                </svg>
+              </div>
+
+              {/* Glass disk backdrop */}
+              <div className="glass-showcase-disk"></div>
+
+              {/* Showcase Main Display */}
+              <div className="showcase-main-display">
+                <span className="showcase-item-badge">{currentShowcase.tag}</span>
+                <div className="showcase-image-container">
+                  <img 
+                    src={currentShowcase.image} 
+                    alt={currentShowcase.name} 
+                    className="showcase-hero-image"
+                    key={currentShowcase.id} 
+                  />
+                </div>
+                
+                {/* Floating Product Details */}
+                <div className="showcase-floating-details">
+                  <div className="details-header">
+                    <h4>{currentShowcase.name}</h4>
+                    <span className="color-tag">{currentShowcase.colorName}</span>
+                  </div>
+                  <div className="details-footer">
+                    <span className="price-tag">Rs. {currentShowcase.price}</span>
+                    <button className="details-cart-btn" onClick={() => {
+                      const matchedProd = products.find(p => p.id === currentShowcase.id);
+                      if (matchedProd) addToCart(matchedProd);
+                    }}>
+                      Add <ShoppingBag size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Showcase Selector Thumbnails */}
+            <div className="showcase-thumbnails">
+              {heroShowcaseProducts.map((prod, idx) => (
+                <button
+                  key={prod.id}
+                  className={`showcase-thumb-btn ${idx === activeShowcaseIdx ? 'active' : ''}`}
+                  onClick={() => setActiveShowcaseIdx(idx)}
+                >
+                  <img src={prod.image} alt={prod.name} />
+                  <span className="thumb-indicator"></span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="categories section-padding">
+      <section id="categories-section" className="categories section-padding">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Find Your <span>Style</span></h2>

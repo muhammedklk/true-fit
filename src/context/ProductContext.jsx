@@ -5,25 +5,248 @@ const ProductContext = createContext();
 export const useProducts = () => useContext(ProductContext);
 
 const initialProducts = [
+  // Pants
   {
     id: 1,
-    name: "Wool Blend Blazer",
-    category: "Coats",
-    price: 249,
-    images: ["https://images.pexels.com/photos/1300550/pexels-photo-1300550.jpeg?auto=compress&cs=tinysrgb&w=1000"],
+    name: "Slim Fit Cargo Pants",
+    category: "Pants",
+    price: 1299,
+    images: ["/images/black_pants.png"],
     videos: [],
     trending: true,
-    description: "A premium wool blend blazer for a sophisticated look."
+    description: "Versatile slim fit cargo pants with utility pockets.",
+    brand: "Zara",
+    color: "Black",
+    material: "Organic Cotton"
   },
   {
     id: 2,
+    name: "Stretch Chino Pants",
+    category: "Pants",
+    price: 1199,
+    images: ["/images/olive_chino_pants.png"],
+    videos: [],
+    trending: false,
+    description: "Comfortable stretch cotton chinos for everyday wear.",
+    brand: "H&M",
+    color: "Olive",
+    material: "Organic Cotton"
+  },
+  // Shirts
+  {
+    id: 3,
     name: "Classic Oxford Shirt",
     category: "Shirts",
-    price: 89,
-    images: ["https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=1000"],
+    price: 899,
+    images: ["/images/white_oxford_shirt.png"],
     videos: [],
     trending: true,
-    description: "Timeless classic Oxford shirt in crisp white."
+    description: "Timeless classic Oxford shirt in crisp white.",
+    brand: "Uniqlo",
+    color: "White",
+    material: "Organic Cotton"
+  },
+  {
+    id: 4,
+    name: "Casual Denim Shirt",
+    category: "Shirts",
+    price: 999,
+    images: ["/images/denim_shirt.png"],
+    videos: [],
+    trending: false,
+    description: "Rugged denim shirt with a modern slim fit.",
+    brand: "Zara",
+    color: "Blue",
+    material: "Denim"
+  },
+  // T-Shirts
+  {
+    id: 5,
+    name: "White Crewneck T-Shirt",
+    category: "T-Shirts",
+    price: 399,
+    images: ["/images/white_tshirt.png"],
+    videos: [],
+    trending: true,
+    description: "Super-soft organic cotton t-shirt in classic crew neck.",
+    brand: "True Fit",
+    color: "White",
+    material: "Organic Cotton"
+  },
+  {
+    id: 6,
+    name: "Sand Oversize T-Shirt",
+    category: "T-Shirts",
+    price: 498,
+    images: ["/images/sand_tshirt.png"],
+    videos: [],
+    trending: false,
+    description: "Premium oversized cotton t-shirt in a beautiful sand/beige tone.",
+    brand: "True Fit",
+    color: "Beige",
+    material: "Organic Cotton"
+  },
+  // Track Pants
+  {
+    id: 7,
+    name: "Athletic Jogger Track Pants",
+    category: "Track Pants",
+    price: 799,
+    images: ["/images/grey_joggers.png"],
+    videos: [],
+    trending: false,
+    description: "Premium fleece joggers designed for comfort and performance.",
+    brand: "Nike",
+    color: "Grey",
+    material: "Organic Cotton"
+  },
+  {
+    id: 8,
+    name: "Performance Tech Track Pants",
+    category: "Track Pants",
+    price: 859,
+    images: ["/images/navy_joggers.png"],
+    videos: [],
+    trending: false,
+    description: "Lightweight, moisture-wicking track pants with zippered pockets.",
+    brand: "Nike",
+    color: "Blue",
+    material: "Organic Cotton"
+  },
+  // Trousers
+  {
+    id: 9,
+    name: "Tailored Wool Trousers",
+    category: "Trousers",
+    price: 1599,
+    images: ["/images/grey_wool_trousers.png"],
+    videos: [],
+    trending: false,
+    description: "Elegant tailored trousers for formal occasions.",
+    brand: "Zara",
+    color: "Grey",
+    material: "Merino Wool"
+  },
+  {
+    id: 10,
+    name: "Smart Casual Slim Trousers",
+    category: "Trousers",
+    price: 1399,
+    images: ["/images/brown_trousers.png"],
+    videos: [],
+    trending: false,
+    description: "Modern slim fit trousers suitable for office to dinner.",
+    brand: "H&M",
+    color: "Brown",
+    material: "Organic Cotton"
+  },
+  // Caps
+  {
+    id: 11,
+    name: "Classic Baseball Cap",
+    category: "Caps",
+    price: 299,
+    images: ["/images/black_baseball_cap.png"],
+    videos: [],
+    trending: false,
+    description: "Adjustable cotton baseball cap with embroidered detail.",
+    brand: "True Fit",
+    color: "Black",
+    material: "Organic Cotton"
+  },
+  {
+    id: 12,
+    name: "Beige Dad Cap",
+    category: "Caps",
+    price: 349,
+    images: ["/images/beige_cap.png"],
+    videos: [],
+    trending: false,
+    description: "Modern flat-brim snapback cap for a streetwear vibe.",
+    brand: "True Fit",
+    color: "Beige",
+    material: "Organic Cotton"
+  },
+  // Watches
+  {
+    id: 13,
+    name: "Ocean Leather Watch",
+    category: "Watches",
+    price: 1999,
+    images: ["/images/blue_watch.png"],
+    videos: [],
+    trending: true,
+    description: "Sleek minimalist analog watch with a genuine leather strap.",
+    brand: "True Fit",
+    color: "Blue",
+    material: "Genuine Leather"
+  },
+  {
+    id: 14,
+    name: "Gold Chronograph Watch",
+    category: "Watches",
+    price: 2999,
+    images: ["/images/gold_watch.png"],
+    videos: [],
+    trending: false,
+    description: "Premium stainless steel chronograph watch with quartz movement.",
+    brand: "Zara",
+    color: "Gold",
+    material: "Stainless Steel"
+  },
+  // Socks
+  {
+    id: 15,
+    name: "Organic Cotton Crew Socks",
+    category: "Socks",
+    price: 150,
+    images: ["/images/white_cotton_socks.png"],
+    videos: [],
+    trending: false,
+    description: "Breathable and cushioned organic cotton socks for daily comfort.",
+    brand: "Uniqlo",
+    color: "White",
+    material: "Organic Cotton"
+  },
+  {
+    id: 16,
+    name: "Classic Cotton Socks",
+    category: "Socks",
+    price: 199,
+    images: ["/images/white_cotton_socks.png"],
+    videos: [],
+    trending: false,
+    description: "Warm and cozy patterned socks knit from premium cotton.",
+    brand: "H&M",
+    color: "White",
+    material: "Organic Cotton"
+  },
+  // Coats
+  {
+    id: 17,
+    name: "Black Hoodie",
+    category: "Coats",
+    price: 499,
+    images: ["/images/black_hoodie.png"],
+    videos: [],
+    trending: true,
+    description: "Premium black hoodie designed for maximum comfort and style.",
+    brand: "True Fit",
+    color: "Black",
+    material: "Organic Cotton"
+  },
+  {
+    id: 18,
+    name: "Ocean Hoodie",
+    category: "Coats",
+    price: 489,
+    images: ["/images/ocean_hoodie.png"],
+    videos: [],
+    trending: false,
+    description: "Beautiful ocean-blue hoodie with a comfortable, oversized fit.",
+    brand: "True Fit",
+    color: "Blue",
+    material: "Organic Cotton"
   }
 ];
 
@@ -34,10 +257,10 @@ const initialOffers = [
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('tf_products');
+    const saved = localStorage.getItem('tf_products_v4');
     try {
       let data = saved ? JSON.parse(saved) : initialProducts;
-      if (!Array.isArray(data)) data = initialProducts;
+      if (!Array.isArray(data) || data.length < 10) data = initialProducts;
       return data.map(p => {
         let imgs = Array.isArray(p.images) ? p.images.filter(img => img) : (p.image ? [p.image] : []);
         // Clean up known broken Unsplash URLs from localstorage
@@ -106,7 +329,7 @@ export const ProductProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('tf_products', JSON.stringify(products));
+    localStorage.setItem('tf_products_v4', JSON.stringify(products));
   }, [products]);
 
   useEffect(() => {
