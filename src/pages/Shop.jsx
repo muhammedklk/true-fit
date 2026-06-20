@@ -87,9 +87,11 @@ const Shop = () => {
           </div>
         </div>
 
-        <div className="grid-4">
+        <div className="row g-3 g-md-4">
           {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <div key={product.id} className="col-6 col-md-4 col-lg-3">
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
 

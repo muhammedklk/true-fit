@@ -9,6 +9,7 @@ const Home = () => {
   const { products, categories, offers, addToCart } = useProducts();
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeShowcaseIdx, setActiveShowcaseIdx] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const heroShowcaseProducts = [
     {
@@ -170,7 +171,32 @@ const Home = () => {
             <h2 className="section-title">Find Your <span>Style</span></h2>
             <p className="section-subtitle">Browse our curated selection of premium menswear essentials.</p>
           </div>
-          <div className="category-filters">
+          {/* Mobile Category Dropdown Selector */}
+          <div className="mobile-category-menu">
+            <button className="mobile-category-trigger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              <span>Category: <strong>{activeCategory}</strong></span>
+              <span className={`trigger-arrow ${isMobileMenuOpen ? 'up' : 'down'}`}>▾</span>
+            </button>
+            {isMobileMenuOpen && (
+              <div className="mobile-category-dropdown">
+                {categories.map(cat => (
+                  <button 
+                    key={cat} 
+                    className={`mobile-category-item ${cat === activeCategory ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Category Filters */}
+          <div className="category-filters desktop-only">
             {categories.map(cat => (
               <button 
                 key={cat} 
@@ -181,9 +207,11 @@ const Home = () => {
               </button>
             ))}
           </div>
-          <div className="grid-4">
+          <div className="row g-3 g-md-4">
             {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <div key={product.id} className="col-6 col-md-4 col-lg-3">
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
           {filteredProducts.length === 0 && (
@@ -196,25 +224,31 @@ const Home = () => {
 
       {/* Heritage Section */}
       <section className="heritage section-padding">
-        <div className="container grid-2">
-          <div className="heritage-images">
-             <div className="img-box-1"><img src="https://images.pexels.com/photos/3772510/pexels-photo-3772510.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Fashion" /></div>
-             <div className="img-box-2"><img src="https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Style" /></div>
-          </div>
-          <div className="heritage-content">
-             <h2 className="section-title">Heritage Meets <span>Modern</span> Craftsmanship</h2>
-             <p>Our pieces are meticulously crafted to stand the test of time, blending traditional techniques with modern aesthetics.</p>
-             <div className="heritage-stats">
-               <div className="stat-item">
-                 <strong>230k</strong>
-                 <span>Global Sales</span>
-               </div>
-               <div className="stat-item">
-                 <strong>9/10</strong>
-                 <span>Client Satisfaction</span>
-               </div>
-             </div>
-             <Link to="/shop" className="btn btn-primary">Discover More</Link>
+        <div className="container">
+          <div className="row align-items-center g-5">
+            <div className="col-lg-6">
+              <div className="heritage-images">
+                 <div className="img-box-1"><img src="https://images.pexels.com/photos/3772510/pexels-photo-3772510.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Fashion" /></div>
+                 <div className="img-box-2"><img src="https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Style" /></div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="heritage-content">
+                 <h2 className="section-title">Heritage Meets <span>Modern</span> Craftsmanship</h2>
+                 <p>Our pieces are meticulously crafted to stand the test of time, blending traditional techniques with modern aesthetics.</p>
+                 <div className="heritage-stats">
+                   <div className="stat-item">
+                     <strong>230k</strong>
+                     <span>Global Sales</span>
+                   </div>
+                   <div className="stat-item">
+                     <strong>9/10</strong>
+                     <span>Client Satisfaction</span>
+                   </div>
+                 </div>
+                 <Link to="/shop" className="btn btn-primary">Discover More</Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

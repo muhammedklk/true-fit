@@ -89,3 +89,25 @@
           font-size: 1.2rem;
           color: var(--accent-color);
         }
+
+        @media (max-width: 768px) {
+          .product-info {
+            padding: 12px;
+          }
+          .product-name {
+            font-size: 0.95rem;
+          }
+          .product-price {
+            font-size: 1.05rem;
+          }
+          .product-actions {
+            bottom: 10px;
+            right: 10px;
+            opacity: 1;
+            transform: none;
+          }
+          .action-btn {
+            width: 36px;
+            height: 36px;
+          }
+        }
