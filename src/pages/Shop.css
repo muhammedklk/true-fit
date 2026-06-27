@@ -1,18 +1,19 @@
 .shop-page {
-  padding-top: 150px;
+  padding-top: 130px;
+  padding-bottom: 80px;
   min-height: 100vh;
 }
 
 .shop-header {
-  margin-bottom: 4rem;
+  margin-bottom: 2.5rem;
 }
 
 .shop-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
-  gap: 2rem;
+  margin-top: 1.5rem;
+  gap: 1.5rem;
 }
 
 .cat-scroll {
@@ -63,9 +64,66 @@
 }
 
 @media (max-width: 768px) {
+  .shop-page {
+    padding-top: 75px;
+    padding-bottom: 60px;
+  }
+
+  .shop-header {
+    margin-bottom: 1rem;
+    margin-top: 25px;
+  }
+
+  .shop-page .hero-title {
+    font-size: 1.9rem;
+    line-height: 1.15;
+    margin-bottom: 0.2rem;
+  }
+
   .shop-controls {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
+    margin-top: 0.75rem;
+  }
+
+  .cat-scroll {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .cat-btn {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  .filter-trigger {
+    font-size: 0.85rem;
+    padding: 7px 16px;
+    gap: 7px;
+  }
+
+  .shop-grid-section {
+    margin-top: 1rem;
+  }
+
+  .empty-shop {
+    padding: 50px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-page {
+    padding-top: 70px;
+  }
+
+  .shop-page .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .cat-btn {
+    padding: 7px 15px;
+    font-size: 0.8rem;
   }
 }
 
@@ -81,7 +139,7 @@
   opacity: 0;
   visibility: hidden;
   transition: var(--transition);
-  z-index: 1000;
+  z-index: 9998;
 }
 
 .filter-drawer-backdrop.open {
@@ -98,14 +156,63 @@
   height: 100vh;
   background: white;
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
-  z-index: 1001;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  transition: var(--transition);
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .filter-drawer.open {
   right: 0;
+}
+
+@media (max-width: 576px) {
+  .filter-drawer {
+    top: auto;
+    bottom: -100%;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 90vh;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.12);
+    transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .filter-drawer.open {
+    right: 0;
+    bottom: 0;
+  }
+
+  .filter-drawer-header {
+    padding: 16px 20px;
+  }
+
+  .filter-drawer-body {
+    padding: 20px;
+    gap: 1.8rem;
+  }
+
+  .filter-drawer-footer {
+    padding: 16px 20px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Drag handle for mobile bottom sheet */
+.filter-drawer-drag-handle {
+  display: none;
+}
+
+@media (max-width: 576px) {
+  .filter-drawer-drag-handle {
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #ddd;
+    border-radius: 100px;
+    margin: 12px auto 4px;
+  }
 }
 
 .filter-drawer-header {
@@ -142,42 +249,43 @@
 .filter-drawer-body {
   flex: 1;
   overflow-y: auto;
-  padding: 30px;
+  padding: 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.8rem;
 }
 
 .filter-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.7rem;
 }
 
 .filter-section h4 {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--primary-color);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .filter-options-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .filter-pill-btn {
-  padding: 8px 18px;
+  padding: 6px 14px;
   border-radius: 100px;
   border: 1px solid var(--border-color);
   background: transparent;
   color: var(--secondary-color);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 500;
   transition: var(--transition);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .filter-pill-btn:hover {
@@ -191,17 +299,30 @@
   color: white;
 }
 
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Color Swatches Filters */
 .filter-colors-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 }
 
 .color-swatch-btn {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   cursor: pointer;
   transition: var(--transition);
@@ -209,19 +330,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: 2px solid transparent;
+  flex-shrink: 0;
 }
 
 .color-swatch-btn.active {
-  transform: scale(1.15);
+  transform: scale(1.18);
+  border-color: rgba(0,0,0,0.25);
 }
 
 .color-swatch-btn.active::after {
   content: '✓';
   color: white;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   position: absolute;
 }
 
@@ -236,11 +359,12 @@
   border-radius: 100px;
   width: auto;
   height: auto;
-  padding: 6px 14px;
-  font-size: 0.75rem;
+  padding: 5px 12px;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--secondary-color);
+  flex-shrink: 0;
 }
 
 .color-swatch-btn.all-colors.active {
@@ -255,20 +379,21 @@
 
 .filter-drawer-footer {
   display: flex;
-  gap: 12px;
-  padding: 20px 30px;
+  gap: 10px;
+  padding: 14px 24px;
   border-top: 1px solid var(--border-color);
   background: white;
 }
 
 .clear-all-btn {
   flex: 1;
-  padding: 14px;
+  padding: 11px 10px;
   border-radius: 100px;
   border: 1px solid var(--border-color);
   background: transparent;
   color: var(--secondary-color);
   font-weight: 600;
+  font-size: 0.85rem;
   transition: var(--transition);
   cursor: pointer;
 }
@@ -281,11 +406,12 @@
 
 .apply-btn {
   flex: 1.5;
-  padding: 14px;
+  padding: 11px 10px;
   border-radius: 100px;
   background: var(--primary-color);
   color: white;
   font-weight: 600;
+  font-size: 0.85rem;
   transition: var(--transition);
   cursor: pointer;
 }
@@ -297,11 +423,20 @@
 .filter-trigger.active-filters {
   border-color: var(--accent-color);
   color: var(--accent-color);
-  background: rgba(121, 163, 33, 0.05);
+  background: rgba(121, 163, 33, 0.06);
 }
 
 .filter-count-badge {
-  color: var(--accent-color);
-  font-size: 8px;
-  margin-left: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 100px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 2px;
 }

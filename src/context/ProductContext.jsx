@@ -277,8 +277,16 @@ export const ProductProvider = ({ children }) => {
     }
   });
 
+  // Helper: get cart key for a specific user
+  const cartKey = (u) => u ? `tf_cart_${u.id ?? u.email}` : 'tf_cart_guest';
+
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('tf_cart');
+    // Load cart for the currently logged-in user (or guest)
+    const currentUser = (() => {
+      try { return JSON.parse(localStorage.getItem('tf_user')); } catch { return null; }
+    })();
+    const key = cartKey(currentUser);
+    const saved = localStorage.getItem(key);
     try {
       return saved ? JSON.parse(saved) : [];
     } catch (e) {
@@ -332,9 +340,10 @@ export const ProductProvider = ({ children }) => {
     localStorage.setItem('tf_products_v4', JSON.stringify(products));
   }, [products]);
 
+  // Save cart to the CURRENT user's key whenever cart or user changes
   useEffect(() => {
-    localStorage.setItem('tf_cart', JSON.stringify(cart));
-  }, [cart]);
+    localStorage.setItem(cartKey(user), JSON.stringify(cart));
+  }, [cart, user]);
 
   useEffect(() => {
     localStorage.setItem('tf_offers', JSON.stringify(offers));
@@ -357,8 +366,13 @@ export const ProductProvider = ({ children }) => {
 
     // Admin check
     if (normalizedEmail === 'admin' && password === 'admin123') {
-      const adminUser = { role: 'admin', name: 'Store Admin', email: 'admin' };
+      const adminUser = { role: 'admin', name: 'Store Admin', email: 'admin', id: 'admin' };
       setUser(adminUser);
+      // Load admin's cart
+      const adminCart = (() => {
+        try { return JSON.parse(localStorage.getItem(cartKey(adminUser))) || []; } catch { return []; }
+      })();
+      setCart(adminCart);
       return { success: true, role: 'admin' };
     }
 
@@ -369,6 +383,11 @@ export const ProductProvider = ({ children }) => {
     if (foundUser) {
       const customerUser = { role: 'customer', ...foundUser };
       setUser(customerUser);
+      // Load this user's cart from their own key
+      const userCart = (() => {
+        try { return JSON.parse(localStorage.getItem(cartKey(customerUser))) || []; } catch { return []; }
+      })();
+      setCart(userCart);
       return { success: true, role: 'customer' };
     }
 
@@ -389,11 +408,19 @@ export const ProductProvider = ({ children }) => {
     const customerUser = { role: 'customer', ...newUser };
     setUser(customerUser);
     localStorage.setItem('tf_user', JSON.stringify(customerUser));
+    // New user starts with empty cart
+    setCart([]);
+    localStorage.setItem(cartKey(customerUser), JSON.stringify([]));
     return { success: true };
   };
 
   const logout = () => {
+    // Save current cart for this user before clearing
+    if (user) {
+      localStorage.setItem(cartKey(user), JSON.stringify(cart));
+    }
     setUser(null);
+    setCart([]); // Clear cart from memory on logout
     localStorage.removeItem('tf_user');
   };
 
