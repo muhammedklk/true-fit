@@ -1,25 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useProducts } from '../context/ProductContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { MapPin, CreditCard, Wallet, Landmark, X, Check } from 'lucide-react';
+import { MapPin, CreditCard, Wallet, Landmark, X, Check, Navigation } from 'lucide-react';
 import './Checkout.css';
 
 const Checkout = () => {
-  const { cart, placeOrder } = useProducts();
+  const { cart, placeOrder, user } = useProducts();
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    cardName: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: ''
+  const [mapLoading, setMapLoading] = useState(false);
+  const [mapError, setMapError] = useState('');
+  const [mapUrl, setMapUrl] = useState('');
+  const [tempAddress, setTempAddress] = useState('');
+
+  const [formData, setFormData] = useState(() => {
+    // Auto-fill from saved profile if user is logged in
+    if (user && user.role === 'customer') {
+      const nameParts = (user.name || '').trim().split(' ');
+      return {
+        firstName:  nameParts[0] || '',
+        lastName:   nameParts.slice(1).join(' ') || '',
+        email:      user.email      || '',
+        phone:      user.phone      || '',
+        address:    user.address    || '',
+        city:       user.city       || '',
+        postalCode: user.postalCode || '',
+        cardName: '', cardNumber: '', expiry: '', cvv: ''
+      };
+    }
+    return {
+      firstName: '', lastName: '', email: '', phone: '',
+      address: '', city: '', postalCode: '',
+      cardName: '', cardNumber: '', expiry: '', cvv: ''
+    };
   });
 
   const handleInputChange = (e) => {
@@ -32,11 +46,6 @@ const Checkout = () => {
   };
 
   const locationAddress = formData.address;
-  
-  const mapRef = useRef(null);
-  const mapInstance = useRef(null);
-  const markerInstance = useRef(null);
-  const geocoderInstance = useRef(null);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shipping = subtotal > 0 ? 15 : 0;
@@ -48,83 +57,64 @@ const Checkout = () => {
     }
   }, [cart, navigate]);
 
-  const loadGoogleMaps = () => {
-    if (!window.google) {
-      const script = document.createElement('script');
-      // Replace YOUR_API_KEY with actual key for production
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initMap;
-      document.head.appendChild(script);
-    } else {
-      initMap();
+  useEffect(() => {
+    if (user && user.role === 'customer') {
+      const nameParts = (user.name || '').trim().split(' ');
+      setFormData(prev => ({
+        ...prev,
+        firstName: prev.firstName || nameParts[0] || '',
+        lastName: prev.lastName || nameParts.slice(1).join(' ') || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || '',
+        address: prev.address || user.address || '',
+        city: prev.city || user.city || '',
+        postalCode: prev.postalCode || user.postalCode || ''
+      }));
     }
-  };
+  }, [user]);
 
-  const initMap = () => {
-    if (!mapRef.current || !window.google) return;
-
-    const defaultLocation = { lat: 51.5074, lng: -0.1278 }; // London
-
-    mapInstance.current = new window.google.maps.Map(mapRef.current, {
-      center: defaultLocation,
-      zoom: 13,
-      mapTypeControl: false,
-      streetViewControl: false,
-    });
-
-    markerInstance.current = new window.google.maps.Marker({
-      position: defaultLocation,
-      map: mapInstance.current,
-      draggable: true,
-      title: "Drag to your location",
-      animation: window.google.maps.Animation.DROP,
-    });
-
-    geocoderInstance.current = new window.google.maps.Geocoder();
-
-    window.google.maps.event.addListener(markerInstance.current, 'dragend', () => {
-      geocodePosition(markerInstance.current.getPosition());
-    });
-
-    // Try to get user's location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          mapInstance.current.setCenter(pos);
-          markerInstance.current.setPosition(pos);
-          geocodePosition(pos);
-        },
-        () => {
-          console.log("Geolocation failed or denied.");
+  const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setMapError('Geolocation not supported.');
+      return;
+    }
+    setMapLoading(true);
+    setMapError('');
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+            { headers: { 'Accept-Language': 'en' } }
+          );
+          const data = await res.json();
+          const addr = data.display_name || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+          setTempAddress(addr);
+          setMapUrl(`https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.01},${lat-0.01},${lng+0.01},${lat+0.01}&layer=mapnik&marker=${lat},${lng}`);
+        } catch {
+          setMapError('Could not fetch address. You can type it manually.');
         }
-      );
-    }
-  };
-
-  const geocodePosition = (pos) => {
-    if (!geocoderInstance.current) return;
-    geocoderInstance.current.geocode({ latLng: pos }, (responses, status) => {
-      if (status === 'OK' && responses && responses.length > 0) {
-        setLocationAddress(responses[0].formatted_address);
+        setMapLoading(false);
+      },
+      () => {
+        setMapLoading(false);
+        setMapError('Location access denied. Please type address manually.');
       }
-    });
+    );
   };
 
   useEffect(() => {
     if (isMapModalOpen) {
-      loadGoogleMaps();
+      setTempAddress(formData.address || '');
+      setMapUrl('');
+      setMapError('');
     }
-  }, [isMapModalOpen]);
+  }, [isMapModalOpen, formData.address]);
 
   const handleConfirmLocation = () => {
-    if (!locationAddress) {
-      setLocationAddress('Selected from Map');
+    if (tempAddress.trim()) {
+      setLocationAddress(tempAddress.trim());
     }
     setIsMapModalOpen(false);
   };
@@ -136,6 +126,7 @@ const Checkout = () => {
       customer: {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
+        phone: formData.phone,
         address: `${formData.address}, ${formData.city}, ${formData.postalCode}`
       },
       items: cart,
@@ -177,10 +168,22 @@ const Checkout = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label>Email Address</label>
-                <input type="email" name="email" required placeholder="john@example.com" value={formData.email} onChange={handleInputChange} />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input type="email" name="email" required placeholder="john@example.com" value={formData.email} onChange={handleInputChange} />
+                </div>
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input type="tel" name="phone" placeholder="+91 98765 43210" value={formData.phone} onChange={handleInputChange} />
+                </div>
               </div>
+
+              {user && user.address && (
+                <div className="autofill-notice">
+                  ✓ Address auto-filled from your profile. You can edit below.
+                </div>
+              )}
 
               <div className="form-group">
                 <label>Current Location / Address</label>
@@ -202,11 +205,11 @@ const Checkout = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label>City</label>
-                  <input type="text" name="city" required placeholder="London" value={formData.city} onChange={handleInputChange} />
+                  <input type="text" name="city" required placeholder="Kochi" value={formData.city} onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label>Postal Code</label>
-                  <input type="text" name="postalCode" required placeholder="SW1A 1AA" value={formData.postalCode} onChange={handleInputChange} />
+                  <input type="text" name="postalCode" required placeholder="686001" value={formData.postalCode} onChange={handleInputChange} />
                 </div>
               </div>
 
@@ -306,25 +309,81 @@ const Checkout = () => {
       </div>
 
       {isMapModalOpen && (
-        <div className="map-modal-overlay">
-          <div className="map-modal">
+        <div className="map-modal-overlay" onClick={() => setIsMapModalOpen(false)}>
+          <div className="map-modal" onClick={e => e.stopPropagation()}>
             <div className="map-modal-header">
-              <h3>Select Location</h3>
-              <button className="map-modal-close" onClick={() => setIsMapModalOpen(false)}>
-                <X size={24} />
+              <h3><MapPin size={18} /> Pick Location</h3>
+              <button type="button" className="map-modal-close" onClick={() => setIsMapModalOpen(false)}>
+                <X size={20} />
               </button>
             </div>
-            <p style={{ marginBottom: '15px', color: 'var(--text-muted)' }}>
-              Drag the marker to your exact shipping location.
-            </p>
-            <div className="map-container" ref={mapRef}>
-              <div className="map-loading">
-                {!window.google ? 'Google Maps API not loaded. Add your API key.' : 'Loading Map...'}
+            <div className="map-modal-body" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <button
+                type="button"
+                className="loc-gps-btn"
+                onClick={getCurrentLocation}
+                disabled={mapLoading}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '12px',
+                  border: '2px solid var(--accent-color)',
+                  background: 'rgba(121,163,33,0.07)',
+                  color: 'var(--accent-color)',
+                  fontWeight: '700',
+                  cursor: 'pointer'
+                }}
+              >
+                <Navigation size={16} />
+                {mapLoading ? 'Getting location…' : 'Use My Current Location'}
+              </button>
+
+              {mapError && (
+                <div style={{ color: '#ef4444', background: '#fef2f2', border: '1px solid #fecaca', padding: '8px 12px', borderRadius: '8px', fontSize: '0.8rem' }}>
+                  {mapError}
+                </div>
+              )}
+
+              {mapUrl && (
+                <div style={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                  <iframe
+                    title="checkout-map"
+                    src={mapUrl}
+                    style={{ width: '100%', height: '200px', border: 'none', display: 'block' }}
+                    allowFullScreen
+                  />
+                </div>
+              )}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: '700', textTransform: 'uppercase', color: '#aaa' }}>Address</label>
+                <textarea
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '12px', border: '1.5px solid var(--border-color)', fontSize: '0.88rem', fontFamily: 'inherit', outline: 'none', resize: 'vertical' }}
+                  value={tempAddress}
+                  onChange={e => setTempAddress(e.target.value)}
+                  rows={3}
+                  placeholder="Type or use GPS to auto-fill your address…"
+                />
               </div>
             </div>
-            <button className="btn btn-primary w-100" onClick={handleConfirmLocation}>
-              <Check size={18} style={{ marginRight: '8px' }} /> Confirm Location
-            </button>
+            <div className="map-modal-footer" style={{ display: 'flex', gap: '10px', padding: '16px 20px', borderTop: '1px solid var(--border-color)' }}>
+              <button type="button" className="btn btn-secondary" style={{ flex: 1, padding: '11px', borderRadius: '100px' }} onClick={() => setIsMapModalOpen(false)}>
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ flex: 2, padding: '11px', borderRadius: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                onClick={handleConfirmLocation}
+                disabled={!tempAddress.trim()}
+              >
+                <Check size={16} /> Confirm Address
+              </button>
+            </div>
           </div>
         </div>
       )}

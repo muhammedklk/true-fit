@@ -247,6 +247,249 @@ const initialProducts = [
     brand: "True Fit",
     color: "Blue",
     material: "Organic Cotton"
+  },
+  // Pants Additional
+  {
+    id: 19,
+    name: "Relaxed Fit Denim Jeans",
+    category: "Pants",
+    price: 1499,
+    images: ["https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Premium washed cotton denim jeans with a relaxed modern fit.",
+    brand: "Zara",
+    color: "Blue",
+    material: "Denim"
+  },
+  {
+    id: 20,
+    name: "Utility Linen Pants",
+    category: "Pants",
+    price: 1699,
+    images: ["https://images.pexels.com/photos/1895015/pexels-photo-1895015.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Lightweight linen-blend utility pants perfect for warm weather.",
+    brand: "H&M",
+    color: "Beige",
+    material: "Organic Cotton"
+  },
+  // Shirts Additional
+  {
+    id: 21,
+    name: "Flannel Plaid Shirt",
+    category: "Shirts",
+    price: 1199,
+    images: ["https://images.pexels.com/photos/769749/pexels-photo-769749.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Soft cotton flannel shirt with a classic plaid pattern.",
+    brand: "Uniqlo",
+    color: "Red",
+    material: "Organic Cotton"
+  },
+  {
+    id: 22,
+    name: "Short Sleeve Resort Shirt",
+    category: "Shirts",
+    price: 1099,
+    images: ["https://images.pexels.com/photos/2293883/pexels-photo-2293883.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: true,
+    description: "Relaxed fit resort collar shirt in a breathable woven texture.",
+    brand: "Zara",
+    color: "Beige",
+    material: "Organic Cotton"
+  },
+  // T-Shirts Additional
+  {
+    id: 23,
+    name: "Graphic Vintage T-Shirt",
+    category: "T-Shirts",
+    price: 599,
+    images: ["https://images.pexels.com/photos/1566412/pexels-photo-1566412.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Faded vintage graphic tee crafted from heavy organic cotton.",
+    brand: "Zara",
+    color: "Black",
+    material: "Organic Cotton"
+  },
+  {
+    id: 24,
+    name: "Heavyweight Pocket Tee",
+    category: "T-Shirts",
+    price: 549,
+    images: ["https://images.pexels.com/photos/1656690/pexels-photo-1656690.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Premium thick cotton tee with a clean chest pocket design.",
+    brand: "Uniqlo",
+    color: "Olive",
+    material: "Organic Cotton"
+  },
+  // Track Pants Additional
+  {
+    id: 25,
+    name: "Slim Fit Sports Joggers",
+    category: "Track Pants",
+    price: 999,
+    images: ["https://images.pexels.com/photos/4853082/pexels-photo-4853082.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: true,
+    description: "Streamlined active joggers engineered for absolute movement and comfort.",
+    brand: "Nike",
+    color: "Black",
+    material: "Organic Cotton"
+  },
+  {
+    id: 26,
+    name: "Tech Fleece Track Pants",
+    category: "Track Pants",
+    price: 1299,
+    images: ["https://images.pexels.com/photos/1805411/pexels-photo-1805411.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Advanced double-sided fleece track pants with modern details.",
+    brand: "Nike",
+    color: "Grey",
+    material: "Organic Cotton"
+  },
+  // Trousers Additional
+  {
+    id: 27,
+    name: "Pleated Smart Trousers",
+    category: "Trousers",
+    price: 1799,
+    images: ["https://images.pexels.com/photos/1300550/pexels-photo-1300550.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: true,
+    description: "Elegant tailored pleated trousers with a contemporary crop.",
+    brand: "Zara",
+    color: "Black",
+    material: "Merino Wool"
+  },
+  {
+    id: 28,
+    name: "Classic Checkered Trousers",
+    category: "Trousers",
+    price: 1699,
+    images: ["https://images.pexels.com/photos/1018911/pexels-photo-1018911.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Sharp smart-casual checkered trousers in fine stretch blend.",
+    brand: "H&M",
+    color: "Grey",
+    material: "Merino Wool"
+  },
+  // Caps Additional
+  {
+    id: 29,
+    name: "Sports Corduroy Cap",
+    category: "Caps",
+    price: 399,
+    images: ["https://images.pexels.com/photos/844867/pexels-photo-844867.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Vintage structure corduroy cap with an adjustable brass buckle.",
+    brand: "True Fit",
+    color: "Brown",
+    material: "Organic Cotton"
+  },
+  {
+    id: 30,
+    name: "Minimalist Knit Beanie",
+    category: "Caps",
+    price: 299,
+    images: ["https://images.pexels.com/photos/1485031/pexels-photo-1485031.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Soft ribbed merino wool beanie designed for maximum warmth.",
+    brand: "True Fit",
+    color: "Grey",
+    material: "Merino Wool"
+  },
+  // Watches Additional
+  {
+    id: 31,
+    name: "Sleek Black Smartwatch",
+    category: "Watches",
+    price: 3999,
+    images: ["https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: true,
+    description: "Full-feature minimalist smartwatch with custom active watch faces.",
+    brand: "True Fit",
+    color: "Black",
+    material: "Stainless Steel"
+  },
+  {
+    id: 32,
+    name: "Silver Vintage Dress Watch",
+    category: "Watches",
+    price: 2499,
+    images: ["https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Timeless stainless steel watch with an elegant silver dial.",
+    brand: "Zara",
+    color: "Silver",
+    material: "Stainless Steel"
+  },
+  // Socks Additional
+  {
+    id: 33,
+    name: "Patterned Wool Socks Pack",
+    category: "Socks",
+    price: 249,
+    images: ["https://images.pexels.com/photos/3731256/pexels-photo-3731256.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Pack of 3 merino wool cozy patterned socks.",
+    brand: "Uniqlo",
+    color: "Grey",
+    material: "Merino Wool"
+  },
+  {
+    id: 34,
+    name: "Active Cushion Ankle Socks",
+    category: "Socks",
+    price: 180,
+    images: ["https://images.pexels.com/photos/934070/pexels-photo-934070.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Engineered breathable ankle socks with extra arch cushioning.",
+    brand: "Nike",
+    color: "Black",
+    material: "Organic Cotton"
+  },
+  // Coats Additional
+  {
+    id: 35,
+    name: "Double Breasted Trench Coat",
+    category: "Coats",
+    price: 2999,
+    images: ["https://images.pexels.com/photos/7631336/pexels-photo-7631336.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: true,
+    description: "Classic double-breasted trench coat tailored in fine merino wool.",
+    brand: "Zara",
+    color: "Beige",
+    material: "Merino Wool"
+  },
+  {
+    id: 36,
+    name: "Classic Denim Jacket",
+    category: "Coats",
+    price: 1899,
+    images: ["https://images.pexels.com/photos/1484807/pexels-photo-1484807.jpeg?auto=compress&cs=tinysrgb&w=600"],
+    videos: [],
+    trending: false,
+    description: "Iconic button-up jean jacket in durable heavy-wash denim.",
+    brand: "H&M",
+    color: "Blue",
+    material: "Denim"
   }
 ];
 
@@ -257,7 +500,7 @@ const initialOffers = [
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState(() => {
-    const saved = localStorage.getItem('tf_products_v4');
+    const saved = localStorage.getItem('tf_products_v5');
     try {
       let data = saved ? JSON.parse(saved) : initialProducts;
       if (!Array.isArray(data) || data.length < 10) data = initialProducts;
@@ -337,7 +580,7 @@ export const ProductProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('tf_products_v4', JSON.stringify(products));
+    localStorage.setItem('tf_products_v5', JSON.stringify(products));
   }, [products]);
 
   // Save cart to the CURRENT user's key whenever cart or user changes
@@ -424,6 +667,22 @@ export const ProductProvider = ({ children }) => {
     localStorage.removeItem('tf_user');
   };
 
+  const updateProfile = (profileData) => {
+    // Update the logged-in user's profile
+    const updatedUser = { ...user, ...profileData };
+    setUser(updatedUser);
+    localStorage.setItem('tf_user', JSON.stringify(updatedUser));
+    // Also update in users list — match by id OR email as fallback
+    const updatedUsers = users.map(u =>
+      (u.id === user.id || u.email === user.email)
+        ? { ...u, ...profileData }
+        : u
+    );
+    setUsers(updatedUsers);
+    localStorage.setItem('tf_users', JSON.stringify(updatedUsers));
+    return { success: true };
+  };
+
   const addProduct = (product) => {
     setProducts([...products, { ...product, id: Date.now() }]);
   };
@@ -497,6 +756,7 @@ export const ProductProvider = ({ children }) => {
       login,
       logout,
       register,
+      updateProfile,
       orders,
       placeOrder,
       updateOrderStatus,

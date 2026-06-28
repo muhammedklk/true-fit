@@ -33,8 +33,8 @@ const Signup = () => {
     });
 
     if (result.success) {
-      alert('Account created successfully! Please login.');
-      navigate('/login');
+      // register() already auto-logs in the user, go straight to profile
+      navigate('/profile');
     } else {
       setError(result.message);
     }

@@ -33,8 +33,8 @@ const ProductDetail = () => {
   return (
     <div className="product-detail-page section-padding">
       <div className="container">
-        <div className="detail-grid">
-          <div className="detail-gallery fade-in">
+        <div className="row detail-grid g-4 g-lg-5">
+          <div className="col-12 col-md-4 col-lg-4 detail-gallery fade-in">
             <div className="main-img-box">
               {currentMedia?.type === 'video' ? (
                 <video src={currentMedia.url} controls autoPlay muted loop className="detail-video"></video>
@@ -58,7 +58,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          <div className="detail-info fade-in">
+          <div className="col-12 col-md-8 col-lg-8 detail-info fade-in">
             <div className="detail-cat">{product.category}</div>
             <h1 className="detail-name">{product.name}</h1>
             <div className="detail-rating">
@@ -71,7 +71,7 @@ const ProductDetail = () => {
               </div>
               <span>(120 Reviews)</span>
             </div>
-            <div className="detail-price">${product.price}</div>
+            <div className="detail-price">Rs.{product.price.toLocaleString()}</div>
             <p className="detail-desc">
               {product.description || "Elevate your wardrobe with this premium piece. Crafted from high-quality materials, it offers both comfort and style for any occasion."}
             </p>
@@ -111,16 +111,16 @@ const ProductDetail = () => {
               </button>
             </div>
 
-            <div className="detail-features">
-              <div className="feature-item">
+            <div className="row detail-features g-3">
+              <div className="col-4 col-sm-4 feature-item">
                 <Truck size={20} />
-                <div><strong>Free Shipping</strong><span>On orders over $150</span></div>
+                <div><strong>Free Shipping</strong><span>On orders over Rs.1,000</span></div>
               </div>
-              <div className="feature-item">
+              <div className="col-4 col-sm-4 feature-item">
                 <RotateCcw size={20} />
                 <div><strong>30-Day Returns</strong><span>Hassle-free exchanges</span></div>
               </div>
-              <div className="feature-item">
+              <div className="col-4 col-sm-4 feature-item">
                 <ShieldCheck size={20} />
                 <div><strong>Secure Payment</strong><span>100% data protection</span></div>
               </div>

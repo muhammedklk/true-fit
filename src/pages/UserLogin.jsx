@@ -8,14 +8,21 @@ const UserLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useProducts();
+  const { login, user } = useProducts();
   const navigate = useNavigate();
+
+  // If already logged in, redirect immediately
+  React.useEffect(() => {
+    if (user) {
+      navigate(user.role === 'admin' ? '/admin' : '/profile', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = login(email, password);
     if (result.success) {
-      navigate('/profile');
+      navigate(result.role === 'admin' ? '/admin' : '/profile');
     } else {
       setError(result.message || 'Invalid email or password');
     }
